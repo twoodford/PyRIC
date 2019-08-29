@@ -38,6 +38,7 @@ import os
 import json
 import pyric
 import pyric.net.wireless.nl80211_h as nl80211h
+import pkg_resources
 
 # get current working directory
 fpath = os.path.dirname(os.path.realpath(__file__))
@@ -49,12 +50,13 @@ cmdlookup = None  # reverse lookup for command constants
 cin = None
 try:
     # first three lines are comments, 4th line is empty
-    cin = open(cmdpath,'r')
+    #cin = open(cmdpath,'r')
+    cin = pkg_resources.resource_stream('pyric.nlhelp', 'commands.help')
     for _ in range(4): _in = cin.readline()
     commands = json.loads(cin.readline())
     cmdlookup = json.loads(cin.readline())
-except:
-    raise pyric.error(pyric.EUNDEF,"Failed to process commands.help")
+#except:
+#    raise pyric.error(pyric.EUNDEF,"Failed to process commands.help")
 finally:
     if cin: cin.close()
 
@@ -64,12 +66,13 @@ attrlookup = None # reverse lookup for attribute constants
 ain = None
 try:
     # first three lines are comments, 3th line is empty
-    ain = open(attrpath,'r')
+    #ain = open(attrpath,'r')
+    ain = pkg_resources.resource_stream('pyric.nlhelp', 'attributes.help')
     for _ in range(4): _in = ain.readline()
     attributes = json.loads(ain.readline())
     attrlookup = json.loads(ain.readline())
-except:
-    raise pyric.error(pyric.EUNDEF, "Failed to process attributes.help")
+#except:
+#    raise pyric.error(pyric.EUNDEF, "Failed to process attributes.help")
 finally:
     if ain: ain.close()
 
