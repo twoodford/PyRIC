@@ -53,7 +53,8 @@ _PY3_ = sys.version_info.major == 3
 
 class error(EnvironmentError): pass
 
-BUFSZ = 32768 # Generic default buffersize
+# Default buffer size
+BUFSZ = 32768
 
 """
 NETLINK SOCKET
@@ -731,3 +732,8 @@ def _maxbufsz_():
         return 2097152
     finally:
         if fin: fin.close()
+
+
+# Normally, pyric defaults to 32768 as the default buffer size, but this will exceed
+# the maximum buffer size on some embedded devices
+BUFSZ = 32768 if _maxbufsz_() > 32768 else _maxbufsz_()
